@@ -1,0 +1,79 @@
+Data.js file
+---------------------------
+import React, { useState } from 'react';
+
+const Data = () => {
+    const [file, setFile] = useState(null);
+
+    const handleFileUpload = (event) => {
+        const selectedFile = event.target.files[0];
+        setFile(selectedFile);
+    };
+
+    const handleAddSource = () => {
+        // Implement the logic to connect a custom data source using the 'file' state
+        // For now, we'll just log the file details
+        console.log('Adding custom data source:', file);
+    };
+
+    return (
+        <div style={styles.container}>
+            <h2 style={styles.heading}>Data Section</h2>
+            <p style={styles.text}>Connect a custom data source</p>
+
+            <label htmlFor="fileInput" style={styles.label}>
+                Upload a file with your own knowledge:
+            </label>
+            <input
+                type="file"
+                id="fileInput"
+                accept=".txt, .jpg, .doc, .pdf, .docx"
+                onChange={handleFileUpload}
+                style={styles.fileInput}
+            />
+
+            <button onClick={handleAddSource} style={styles.addButton}>
+                + Add Source
+            </button>
+        </div>
+    );
+};
+
+const styles = {
+    container: {
+        padding: '20px',
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        backgroundColor: '#f9f9f9',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    },
+    heading: {
+        fontSize: '24px',
+        marginBottom: '10px',
+    },
+    text: {
+        fontSize: '16px',
+        marginBottom: '20px',
+    },
+    label: {
+        display: 'block',
+        marginBottom: '10px',
+        fontSize: '16px',
+    },
+    fileInput: {
+        padding: '10px',
+        marginBottom: '20px',
+    },
+    addButton: {
+        padding: '10px',
+        backgroundColor: '#3498db',
+        color: 'white',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        fontSize: '16px',
+        transition: 'background-color 0.3s',
+    },
+};
+
+export default Data;
