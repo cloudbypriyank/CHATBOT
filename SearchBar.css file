@@ -1,0 +1,27 @@
+SearchBar.css file
+----------------------------------------------
+/* SearchBar.css */
+
+.search-bar-container {
+    background-color: #f1f1f1;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar-container input {
+    padding: 10px;
+    width: 60%;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.search-bar-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4285f4;
+    color: #fff;
+    cursor: pointer;
+}
