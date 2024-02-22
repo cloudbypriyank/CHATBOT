@@ -1,0 +1,15 @@
+// Action.js
+import React from 'react';
+
+const Action = () => {
+    // Implement your action functionality here
+
+    return (
+        <div>
+            <h2>Action</h2>
+            {/* Add your action UI components here */}
+        </div>
+    );
+};
+
+export default Action;
