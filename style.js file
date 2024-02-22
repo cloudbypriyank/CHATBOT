@@ -1,0 +1,120 @@
+style.js file
+---------------------
+// Style.js
+
+import React, { useState } from 'react';
+
+const Style = ({ onUserMessageColorChange }) => {
+    const [pageBackgroundColor, setPageBackgroundColor] = useState('');
+    const [userMessageColor, setUserMessageColor] = useState('');
+
+    const handleColorChange = (color, type) => {
+        if (type === 'page') {
+            document.body.style.backgroundColor = color;
+            setPageBackgroundColor(color);
+            console.log(`Selected Page Background Color: ${color}`);
+        } else if (type === 'user') {
+            setUserMessageColor(color);
+            onUserMessageColorChange(color); // Update the user message color in App.js
+            console.log(`Selected User Message Color: ${color}`);
+        }
+    };
+
+    const pageBackgroundColors = ['red', 'yellow', 'pink', 'green', 'gray', 'black', 'white'];
+    const userMessageColors = ['lightblue', 'blue', 'orange', 'purple', 'cyan', 'lightgreen'];
+
+    return (
+        <div style={styles.container}>
+            <h2 style={styles.heading}>Style Section</h2>
+
+            <div>
+                <p style={styles.colorType}>Page Background Color</p>
+                <div style={styles.colorButtonsContainer}>
+                    {pageBackgroundColors.map((color) => (
+                        <button
+                            key={color}
+                            onClick={() => handleColorChange(color, 'page')}
+                            style={{
+                                backgroundColor: color,
+                                ...getButtonStyles(color, pageBackgroundColor),
+                            }}
+                        ></button>
+                    ))}
+                </div>
+            </div>
+
+            <div>
+                <p style={styles.colorType}>User Chatbot Color</p>
+                <div style={styles.colorButtonsContainer}>
+                    {userMessageColors.map((color) => (
+                        <button
+                            key={color}
+                            onClick={() => handleColorChange(color, 'user')}
+                            style={{
+                                backgroundColor: color,
+                                ...getButtonStyles(color, userMessageColor),
+                            }}
+                        ></button>
+                    ))}
+                </div>
+            </div>
+
+            <div style={{ marginTop: '20px' }}>
+                <h3 style={styles.previewHeading}>Preview:</h3>
+                <div
+                    style={{
+                        padding: '20px',
+                        backgroundColor: userMessageColor,
+                        color: '#fff',
+                        borderRadius: '8px',
+                        textAlign: 'center',
+                    }}
+                >
+                    This is a sample User Chatbot message.
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const getButtonStyles = (color, selectedColor) => {
+    return {
+        margin: '5px',
+        width: '30px',
+        height: '30px',
+        border: selectedColor === color ? '2px solid #333' : 'none',
+        cursor: 'pointer',
+        borderRadius: '50%',
+    };
+};
+
+const styles = {
+    container: {
+        padding: '20px',
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+        maxWidth: '400px',
+        margin: '0 auto',
+    },
+    heading: {
+        textAlign: 'center',
+        color: '#3498db',
+    },
+    colorType: {
+        marginBottom: '10px',
+        fontSize: '16px',
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    colorButtonsContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    previewHeading: {
+        textAlign: 'center',
+        color: '#333',
+    },
+};
+
+export default Style;
