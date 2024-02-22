@@ -27,7 +27,7 @@ const Chatbot = () => {
     };
 
     const fetchAssistantResponse = async (userMessage) => {
-        const apiKey = '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';
+        const apiKey = 'YOUR-API-KEY';
         const endpoint = 'https://api.openai.com/v1/chat/completions';
 
         const response = await fetch(endpoint, {
