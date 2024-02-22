@@ -1,0 +1,168 @@
+setup.js file
+--------------------------------------------------
+// Setup.js
+import React, { useState } from 'react';
+
+const Setup = ({ onNameChange, onModelChange, onGreetingChange }) => {
+    const [name, setName] = useState('');
+    const [selectedModel, setSelectedModel] = useState('gpt3.5');
+    const [greetingType, setGreetingType] = useState('static');
+    const [staticGreeting, setStaticGreeting] = useState('');
+    const [generatedGreeting, setGeneratedGreeting] = useState('');
+
+    const handleNameChange = () => {
+        onNameChange(name);
+    };
+
+    const handleModelChange = (e) => {
+        const selectedModel = e.target.value;
+        setSelectedModel(selectedModel);
+        onModelChange(selectedModel);
+    };
+
+    const handleGreetingTypeChange = (e) => {
+        const selectedGreetingType = e.target.value;
+        setGreetingType(selectedGreetingType);
+        onGreetingChange(selectedGreetingType);
+    };
+
+    const handleStaticGreetingChange = (e) => {
+        setStaticGreeting(e.target.value);
+    };
+
+    const handleGeneratedGreetingChange = (e) => {
+        setGeneratedGreeting(e.target.value);
+    };
+
+    return (
+        <div style={styles.container}>
+            <h2 style={styles.heading}>Setup</h2>
+
+            <div style={styles.inputGroup}>
+                <label style={styles.label} htmlFor="name">
+                    Name:
+                </label>
+                <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    style={styles.input}
+                />
+            </div>
+
+            <div style={styles.inputGroup}>
+                <label style={styles.label} htmlFor="model">
+                    Model:
+                </label>
+                <select
+                    id="model"
+                    value={selectedModel}
+                    onChange={handleModelChange}
+                    style={styles.selectInput}
+                >
+                    <option value="gpt3.5">GPT-3.5</option>
+                    <option value="gemini-bard">Gemini Bard</option>
+                </select>
+            </div>
+
+            <div style={styles.inputGroup}>
+                <label style={styles.label} htmlFor="greeting-type">
+                    Greeting Type:
+                </label>
+                <select
+                    id="greeting-type"
+                    value={greetingType}
+                    onChange={handleGreetingTypeChange}
+                    style={styles.selectInput}
+                >
+                    <option value="static">Static</option>
+                    <option value="generated">Generated</option>
+                </select>
+            </div>
+
+            {greetingType === 'static' && (
+                <div style={styles.inputGroup}>
+                    <label style={styles.label} htmlFor="static-greeting">
+                        Static Greeting:
+                    </label>
+                    <input
+                        type="text"
+                        id="static-greeting"
+                        value={staticGreeting}
+                        onChange={handleStaticGreetingChange}
+                        style={styles.input}
+                    />
+                </div>
+            )}
+
+            {greetingType === 'generated' && (
+                <div style={styles.inputGroup}>
+                    <label style={styles.label} htmlFor="generated-greeting">
+                        Generated Greeting:
+                    </label>
+                    <input
+                        type="text"
+                        id="generated-greeting"
+                        value={generatedGreeting}
+                        onChange={handleGeneratedGreetingChange}
+                        style={styles.input}
+                    />
+                </div>
+            )}
+
+            <button onClick={handleNameChange} style={styles.button}>
+                Save Setup
+            </button>
+        </div>
+    );
+};
+
+const styles = {
+    container: {
+        padding: '10px',
+        border: '1px solid #ccc',
+        borderRadius: '20px',
+        boxShadow: '0 0 20px rgba(0, 0, 0, 0.9)',
+        maxWidth: '900px',
+        margin: '10px auto',
+    },
+    heading: {
+        textAlign: 'center',
+        color: '#3498db',
+    },
+    inputGroup: {
+        marginBottom: '10px',
+    },
+    label: {
+        fontSize: '16px',
+        fontWeight: 'bold',
+        color: '#235',
+        marginBottom: '5px',
+        display: 'block',
+    },
+    input: {
+        width: '200%',
+        padding: '10px',
+        borderRadius: '10px',
+        border: '1px solid #ccc',
+    },
+    selectInput: {
+        width: '200%',
+        padding: '8px',
+        borderRadius: '5px',
+        border: '1px solid #ccc',
+    },
+    button: {
+        backgroundColor: '#3498db',
+        color: 'white',
+        padding: '10px',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        width: '100%',
+        fontSize: '16px',
+    },
+};
+
+export default Setup;
