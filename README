@@ -1,0 +1,11 @@
+I have Created 4 section in my webpage for left side  --- { FRONTEND }
+1 setup --- setup.js file
+2 data --- data.js file
+3 style --- style.js file
+4 actions -- actions.js file
+-------------------------------------------
+fOr RIGHT side of chatbot
+Chatbot.jsfile
+---------------------------------------------------------
+And for Backend 
+Run index.js file 
