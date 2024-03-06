@@ -1,120 +1,185 @@
-style.js file
----------------------
-// Style.js
-
 import React, { useState } from 'react';
 
-const Style = ({ onUserMessageColorChange }) => {
-    const [pageBackgroundColor, setPageBackgroundColor] = useState('');
-    const [userMessageColor, setUserMessageColor] = useState('');
+const Setup = ({ onNameChange, onModelChange, onGreetingChange, onSaveSetup, onUpdateChatbotName }) => {
+    const [name, setName] = useState('');
+    const [selectedModel, setSelectedModel] = useState('gpt3.5');
+    const [greetingType, setGreetingType] = useState('static');
+    const [staticGreeting, setStaticGreeting] = useState('');
+    const [generatedGreeting, setGeneratedGreeting] = useState('');
+    const [greetingPrompt, setGreetingPrompt] = useState('Hello, how can I assist you today?');
 
-    const handleColorChange = (color, type) => {
-        if (type === 'page') {
-            document.body.style.backgroundColor = color;
-            setPageBackgroundColor(color);
-            console.log(`Selected Page Background Color: ${color}`);
-        } else if (type === 'user') {
-            setUserMessageColor(color);
-            onUserMessageColorChange(color); // Update the user message color in App.js
-            console.log(`Selected User Message Color: ${color}`);
-        }
+    const handleNameChange = () => {
+        onNameChange(name);
+        onSaveSetup({ ...name, selectedModel, greetingType, greeting: greetingType === 'static' ? staticGreeting : generatedGreeting });
+        onUpdateChatbotName(name); // Update chatbot name
     };
 
-    const pageBackgroundColors = ['red', 'yellow', 'pink', 'green', 'gray', 'black', 'white'];
-    const userMessageColors = ['lightblue', 'blue', 'orange', 'purple', 'cyan', 'lightgreen'];
+    const handleModelChange = (e) => {
+        const selectedModel = e.target.value;
+        setSelectedModel(selectedModel);
+        onModelChange(selectedModel);
+        onSaveSetup({ ...name, selectedModel, greetingType, greeting: greetingType === 'static' ? staticGreeting : generatedGreeting });
+    };
+
+    const handleGreetingTypeChange = (e) => {
+        const selectedGreetingType = e.target.value;
+        setGreetingType(selectedGreetingType);
+        onGreetingChange(selectedGreetingType, selectedGreetingType === 'static' ? staticGreeting : generatedGreeting);
+        onSaveSetup({ ...name, selectedModel, greetingType: selectedGreetingType, greeting: selectedGreetingType === 'static' ? staticGreeting : generatedGreeting });
+    };
+
+    const handleStaticGreetingChange = (e) => {
+        setStaticGreeting(e.target.value);
+        onSaveSetup({ ...name, selectedModel, greetingType, greeting: e.target.value });
+    };
+
+    const handleGeneratedGreetingChange = (e) => {
+        setGeneratedGreeting(e.target.value);
+        onSaveSetup({ ...name, selectedModel, greetingType, greeting: e.target.value });
+    };
+
+    const handleGreetingPromptChange = (e) => {
+        setGreetingPrompt(e.target.value);
+    };
 
     return (
         <div style={styles.container}>
-            <h2 style={styles.heading}>Style Section</h2>
+            <h2 style={styles.heading}>Setup</h2>
 
-            <div>
-                <p style={styles.colorType}>Page Background Color</p>
-                <div style={styles.colorButtonsContainer}>
-                    {pageBackgroundColors.map((color) => (
-                        <button
-                            key={color}
-                            onClick={() => handleColorChange(color, 'page')}
-                            style={{
-                                backgroundColor: color,
-                                ...getButtonStyles(color, pageBackgroundColor),
-                            }}
-                        ></button>
-                    ))}
-                </div>
+            <div style={styles.inputGroup}>
+                <label style={styles.label} htmlFor="name">
+                    Name:
+                </label>
+                <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    style={styles.input}
+                />
             </div>
 
-            <div>
-                <p style={styles.colorType}>User Chatbot Color</p>
-                <div style={styles.colorButtonsContainer}>
-                    {userMessageColors.map((color) => (
-                        <button
-                            key={color}
-                            onClick={() => handleColorChange(color, 'user')}
-                            style={{
-                                backgroundColor: color,
-                                ...getButtonStyles(color, userMessageColor),
-                            }}
-                        ></button>
-                    ))}
-                </div>
-            </div>
-
-            <div style={{ marginTop: '20px' }}>
-                <h3 style={styles.previewHeading}>Preview:</h3>
-                <div
-                    style={{
-                        padding: '20px',
-                        backgroundColor: userMessageColor,
-                        color: '#fff',
-                        borderRadius: '8px',
-                        textAlign: 'center',
-                    }}
+            <div style={styles.inputGroup}>
+                <label style={styles.label} htmlFor="model">
+                    Model:
+                </label>
+                <select
+                    id="model"
+                    value={selectedModel}
+                    onChange={handleModelChange}
+                    style={styles.selectInput}
                 >
-                    This is a sample User Chatbot message.
-                </div>
+                    <option value="gpt3.5">GPT-3.5</option>
+                    <option value="gemini-bard">Gemini Bard</option>
+                </select>
             </div>
+
+            <div style={styles.inputGroup}>
+                <label style={styles.label} htmlFor="greeting-type">
+                    Greeting Type:
+                </label>
+                <select
+                    id="greeting-type"
+                    value={greetingType}
+                    onChange={handleGreetingTypeChange}
+                    style={styles.selectInput}
+                >
+                    <option value="static">Static</option>
+                    <option value="generated">Generated</option>
+                </select>
+            </div>
+
+            {greetingType === 'static' && (
+                <div style={styles.inputGroup}>
+                    <label style={styles.label} htmlFor="static-greeting">
+                        Static Greeting:
+                    </label>
+                    <input
+                        type="text"
+                        id="static-greeting"
+                        value={staticGreeting}
+                        onChange={handleStaticGreetingChange}
+                        style={styles.input}
+                    />
+                </div>
+            )}
+
+            {greetingType === 'generated' && (
+                <div style={styles.inputGroup}>
+                    <label style={styles.label} htmlFor="generated-greeting">
+                        Generated Greeting:
+                    </label>
+                    <input
+                        type="text"
+                        id="generated-greeting"
+                        value={generatedGreeting}
+                        onChange={handleGeneratedGreetingChange}
+                        style={styles.input}
+                    />
+                </div>
+            )}
+
+            <div style={styles.inputGroup}>
+                <label style={styles.label} htmlFor="greeting-prompt">
+                    Greeting Prompt:
+                </label>
+                <input
+                    type="text"
+                    id="greeting-prompt"
+                    value={greetingPrompt}
+                    onChange={handleGreetingPromptChange}
+                    style={styles.input}
+                />
+            </div>
+
+            <button onClick={handleNameChange} style={styles.button}>
+                Save Setup
+            </button>
         </div>
     );
 };
 
-const getButtonStyles = (color, selectedColor) => {
-    return {
-        margin: '5px',
-        width: '30px',
-        height: '30px',
-        border: selectedColor === color ? '2px solid #333' : 'none',
-        cursor: 'pointer',
-        borderRadius: '50%',
-    };
-};
-
 const styles = {
     container: {
-        padding: '20px',
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-        maxWidth: '400px',
-        margin: '0 auto',
+        width: '90px',
+        margin: '80px auto',
     },
     heading: {
         textAlign: 'center',
         color: '#3498db',
     },
-    colorType: {
+    inputGroup: {
         marginBottom: '10px',
+    },
+    label: {
         fontSize: '16px',
         fontWeight: 'bold',
-        color: '#333',
+        color: '#235',
+        marginBottom: '5px',
+        display: 'block',
     },
-    colorButtonsContainer: {
-        display: 'flex',
-        justifyContent: 'center',
+    input: {
+        width: '200%',
+        padding: '10px',
+        borderRadius: '10px',
+        border: '1px solid #ccc',
     },
-    previewHeading: {
-        textAlign: 'center',
-        color: '#333',
+    selectInput: {
+        width: '200%',
+        padding: '8px',
+        borderRadius: '5px',
+        border: '1px solid #ccc',
+    },
+    button: {
+        backgroundColor: '#3498db',
+        color: 'white',
+        padding: '10px',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        width: '100%',
+        fontSize: '16px',
     },
 };
 
-export default Style;
+export default Setup;
