@@ -1,19 +1,21 @@
-App.js File --- 
---------------------------------------------
-/ App.js
 import React, { useState } from 'react';
 import Setup from './setup';
 import Data from './Data';
 import Action from './Actions';
 import Style from './Style';
 import Chatbot from './Chatbot';
-import SearchBar from './SearchBar'; // Add this import
+import Instructions from './Instructions';
+import SearchBar from './SearchBar';
+import Share from './share'; // Import the Share component
+import Directive from './Directive'; // Import the Directive component
 
 const App = () => {
     const [activeSection, setActiveSection] = useState(null);
     const [userMessageColor, setUserMessageColor] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [explorerOpen, setExplorerOpen] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [directive, setDirective] = useState('');
 
     const handleSectionClick = (section) => {
         setActiveSection(section);
@@ -26,6 +28,15 @@ const App = () => {
     const handleSearch = () => {
         console.log('Search query:', searchQuery);
         // Implement your search logic here
+    };
+
+    const handleUserNameChange = (name) => {
+        setUserName(name);
+    };
+
+    const handleDirectiveChange = (directive) => {
+        setDirective(directive);
+        setActiveSection(null); // Clear active section to avoid conflicts with directive
     };
 
     const toggleExplorer = () => {
@@ -96,7 +107,7 @@ const App = () => {
         <div>
             <h2 style={{ textAlign: 'left', color: '#3498db' }}>AI Assistant</h2>
             <div style={explorerIconStyle} onClick={toggleExplorer}>
-                ���
+                ☰
             </div>
             <SearchBar
                 searchQuery={searchQuery}
@@ -133,6 +144,13 @@ const App = () => {
                         Style
                         <div style={activeSection === 'Style' ? activeLineStyle : lineStyle} />
                     </button>
+                    <button 
+                        onClick={() => handleSectionClick('Instructions')}
+                        style={activeSection === 'Instructions' ? activeButtonStyle : buttonStyle}
+                    >
+                        Instructions
+                        <div style={activeSection === 'Instructions' ? activeLineStyle : lineStyle} />
+                    </button>
                     <button
                         onClick={() => handleSectionClick('Search')}
                         style={activeSection === 'Search' ? activeButtonStyle : buttonStyle}
@@ -140,20 +158,30 @@ const App = () => {
                         Search
                         <div style={activeSection === 'Search' ? activeLineStyle : lineStyle} />
                     </button>
+                    <button
+                        onClick={() => handleSectionClick('Directive')}
+                        style={activeSection === 'Directive' ? activeButtonStyle : buttonStyle}
+                    >
+                        Directive
+                        <div style={activeSection === 'Directive' ? activeLineStyle : lineStyle} />
+                    </button>
+                    <Share /> {/* Include the Share component */}
                 </div>
                 <div style={sectionContainerStyle}>
                     {activeSection && (
                         <>
-                            {activeSection === 'Setup' && <Setup />}
+                            {activeSection === 'Setup' && <Setup onNameChange={handleUserNameChange} />}
                             {activeSection === 'Data' && <Data />}
                             {activeSection === 'Action' && <Action />}
                             {activeSection === 'Style' && <Style onUserMessageColorChange={handleUserMessageColorChange} />}
+                            {activeSection === 'Instructions' && <Instructions />}
                             {activeSection === 'Search' && <div>Search Results Here</div>}
+                            {activeSection === 'Directive' && <Directive onDirectiveChange={handleDirectiveChange} />}
                         </>
                     )}
                 </div>
                 <div style={chatbotContainerStyle}>
-                    <Chatbot userMessageColor={userMessageColor} />
+                    <Chatbot userMessageColor={userMessageColor} userName={userName} directive={directive} />
                 </div>
             </div>
         </div>
