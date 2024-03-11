@@ -3,11 +3,15 @@ import Setup from './setup';
 import Data from './Data';
 import Action from './Actions';
 import Style from './Style';
+import NewAction from './NewAction'; // Import the NewAction component
 import Chatbot from './Chatbot';
 import Instructions from './Instructions';
 import SearchBar from './SearchBar';
 import Share from './share'; // Import the Share component
 import Directive from './Directive'; // Import the Directive component
+import AddGuidance from './AddGuidance';
+
+
 
 const App = () => {
     const [activeSection, setActiveSection] = useState(null);
@@ -152,11 +156,25 @@ const App = () => {
                         <div style={activeSection === 'Instructions' ? activeLineStyle : lineStyle} />
                     </button>
                     <button
+                        onClick={() => handleSectionClick('NewAction')}
+                        style={activeSection === 'NewAction' ? activeButtonStyle : buttonStyle}
+                    >
+                        New Action
+                        <div style={activeSection === 'NewAction' ? activeLineStyle : lineStyle} />
+                     </button>
+                    <button
                         onClick={() => handleSectionClick('Search')}
                         style={activeSection === 'Search' ? activeButtonStyle : buttonStyle}
                     >
                         Search
                         <div style={activeSection === 'Search' ? activeLineStyle : lineStyle} />
+                    </button>
+                    <button
+                        onClick={() => handleSectionClick('AddGuidance')}
+                        style={activeSection === 'AddGuidance' ? activeButtonStyle : buttonStyle}
+                    >
+                        AddGuidance
+                        <div style={activeSection === 'AddGuidance' ? activeLineStyle : lineStyle} />
                     </button>
                     <button
                         onClick={() => handleSectionClick('Directive')}
@@ -176,7 +194,9 @@ const App = () => {
                             {activeSection === 'Style' && <Style onUserMessageColorChange={handleUserMessageColorChange} />}
                             {activeSection === 'Instructions' && <Instructions />}
                             {activeSection === 'Search' && <div>Search Results Here</div>}
+                            {activeSection === 'AddGuidance' && <AddGuidance />}
                             {activeSection === 'Directive' && <Directive onDirectiveChange={handleDirectiveChange} />}
+                            {activeSection === 'NewAction' && <NewAction />} {/* Include the NewAction component */}
                         </>
                     )}
                 </div>
